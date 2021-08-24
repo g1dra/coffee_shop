@@ -30,14 +30,14 @@ class CoffeeFactory extends Factory
 
         $amount = [7, 14 , 7];
 
-        // $prices[array_rand($prices)]
+        $index = rand(0,2);
 
         return [
-            "price" => $this->faker->randomNumber(),
-            "type" => $this->faker->word(),
+            "price" => $prices[$index],
+            "type" => $types[$index],
             "picture" => $this->faker->image('storage/app/public', 640, 480, null, false),
-            "amount" => $this->faker->randomNumber(),
-            "brew_time" => $this->faker->randomNumber(),
+            "amount" => $amount[$index],
+            "brew_time" => $time[$index],
         ];
     }
 }

@@ -2,9 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\Barista;
-use App\Models\Coffee;
-use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,7 +24,7 @@ class MakeCoffeeJob implements ShouldQueue
     protected $barista;
     protected $coffee;
 
-    public function __construct(Order $order, Barista $barista, Coffee $coffee)
+    public function __construct($order, $barista, $coffee)
     {
         $this->order = $order;
         $this->barista = $barista;
@@ -44,22 +41,32 @@ class MakeCoffeeJob implements ShouldQueue
         $total_time = 0;
         $refill_time = 120;
 
+
         if ($this->barista->coffee_grinder < $this->coffee->amount) {
             $total_time += $refill_time;
             sleep($refill_time);
+            Log::alert("Reloading coffee machine");
         }
 
-        $this->barista->busy();
+        $this->barista->update([
+            'available' => false,
+            'coffee_grinder' => $this->barista->coffee_grinder - $this->coffee->amount
+        ]);
 
         $total_time += $this->coffee->brew_time;
         sleep($this->coffee->brew_time);
 
-        $this->order->update(['finished']);
+        $this->order->update(['finished'=> true]);
+        $this->barista->update([
+            'available' => true
+        ]);
 
         Log::notice("Barista made", [
             'coffee' => $this->coffee->id,
             'barista' => $this->barista->id,
+            'brew_time' => $this->coffee->brew_time,
             'total_time' => $total_time
         ]);
+        Log::notice("Coffee finished");
     }
 }

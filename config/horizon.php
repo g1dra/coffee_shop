@@ -84,7 +84,7 @@ return [
     */
 
     'waits' => [
-        'redis:default' => 60,
+        'redis:default' => 2000,
     ],
 
     /*
@@ -173,6 +173,7 @@ return [
             'memory' => 128,
             'tries' => 1,
             'nice' => 0,
+            'timeout' => 220 // Timeout after 60 seconds
         ],
     ],
 

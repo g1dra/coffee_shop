@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Jobs\MakeCoffeeJob;
 use App\Models\Barista;
 use App\Models\Order;
@@ -31,8 +32,11 @@ class OrderController extends Controller
 
         Cache::put('index', $barista->id ++ );
 
-        MakeCoffeeJob::dispatch($order, $barista, $coffee); // will receive order and barista
-        return response()->json($order, Response::HTTP_CREATED);
+        MakeCoffeeJob::dispatch($order, $barista, $coffee);
+
+        return (new OrderResource($order))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
 
