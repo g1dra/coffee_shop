@@ -22,7 +22,8 @@ class BaristaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'coffee_grinder' => 300,
         ];
     }
 }

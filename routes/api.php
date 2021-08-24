@@ -16,6 +16,6 @@ Route::apiResource('coffee', CoffeeController::class);
 
 Route::apiResource('order', OrderController::class);
 
-Route::post('/order/to-go', [OrderController::class, 'coffeeToGo']);
+Route::post('/order/to-go', [OrderController::class, 'storeCoffeeToGo']);
 
 Route::post('/barista', [BaristaController::class, 'store']);

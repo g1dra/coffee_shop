@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Barista;
 use Illuminate\Console\Command;
 
 class RefillCoffeeMachines extends Command
@@ -11,14 +12,14 @@ class RefillCoffeeMachines extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'coffee:refill';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Refill coffee machines to 300 grams';
 
     /**
      * Create a new command instance.
@@ -37,6 +38,8 @@ class RefillCoffeeMachines extends Command
      */
     public function handle()
     {
-        return 0;
+        $response = Barista::query()->update(['available' => true]);
+        $this->info('Coffee refiled successfully');
+        return $response;
     }
 }

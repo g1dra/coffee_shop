@@ -15,6 +15,9 @@ class CreateBaristasTable extends Migration
     {
         Schema::create('baristas', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('coffee_grinder');
+            $table->boolean('available')->default(1);
             $table->timestamps();
         });
     }
